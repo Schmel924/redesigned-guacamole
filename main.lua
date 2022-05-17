@@ -12,7 +12,9 @@ end
 --Actual code
 
 function love.load()
-
+ Rink = love.graphics.newImage("Backstage.png", nil)
+ RinkX, RinkY = Rink:getDimensions()
+ love.window.setMode(RinkX,RinkY,{resizable=true, vsync=false})
 end
 
 function love.update(dt)
@@ -20,7 +22,10 @@ function love.update(dt)
 end
 
 function love.draw()
-    -- love.graphics.print("Hello World", 400, 300)
+    love.graphics.setColor (1,1,1)
+    love.graphics.draw (Rink)
+    love.graphics.setColor (0,0,0)
+    love.graphics.rectangle( "fill", RinkX/2, RinkY/2, 50, 50)
 end
 
 
