@@ -175,6 +175,8 @@ function love.draw()
 end
 ```
 Ой, не туда!
-> love.graphics.rectangle( "fill", RinkX/2, RinkY/2, 50, 50)
+```
+love.graphics.rectangle( "fill", RinkX/2, RinkY/2, 50, 50)
+```
 
 Ну вот, теперь ухожу в отгул на неделю. Когда вернусь - напишу об этом блогпост и залью на хаб.
