@@ -10,18 +10,21 @@ end
 
 
 --Actual code
-
+Puck = {}
 function DrawPuck ()
     love.graphics.setColor (0,0,0)
     love.graphics.circle('fill', Puck.x, Puck.y, 50)
+end
+
+function  ResetPuck ()
+    Puck = {dx = love.math.random( -10, 10 ), dy = love.math.random( -10, 10 ), x = RinkX/2, y = RinkY/2}
 end
 
 function love.load()
  Rink = love.graphics.newImage("Backstage.png", nil)
  RinkX, RinkY = Rink:getDimensions()
  love.window.setMode(RinkX,RinkY,{resizable=true, vsync=false})
- Puck = {dx = 0.1, dy = 0.1, x = RinkX/2, y = RinkY/2}
-
+ ResetPuck ()
 end
 
 function love.update(dt)
@@ -35,6 +38,15 @@ function love.draw()
     DrawPuck ()
 end
 
+--input
+function love.keypressed(key)
+    if key == "escape" then
+       love.event.quit()
+    end
+    if key == "space" then
+        ResetPuck ()
+    end
+ end
 
 
 --sheepolution footer
