@@ -13,12 +13,22 @@ end
 Puck = {}
 function DrawPuck ()
     love.graphics.setColor (0,0,0)
-    love.graphics.circle('fill', Puck.x, Puck.y, 50)
+    love.graphics.circle('fill', Puck.x, Puck.y, Puck.radius)
 end
 
 function  ResetPuck ()
-    Puck = {dx = love.math.random( -10, 10 ), dy = love.math.random( -10, 10 ), x = RinkX/2, y = RinkY/2}
+    Puck = {dx = love.math.random( -500, 500 ), dy = love.math.random( -500, 500 ), x = RinkX/2, y = RinkY/2, radius = 50}
 end
+function UpdatePuck (dt)
+    local r = Puck.radius/2
+    Puck.x = Puck.x+Puck.dx*dt
+    Puck.y = Puck.y+Puck.dy*dt
+    if (Puck.x <= r) then Puck.dx = -Puck.dx end
+    if (Puck.y <= r) then Puck.dy = -Puck.dy end
+    if (Puck.x+r >= RinkX) then Puck.dx = -Puck.dx end
+    if (Puck.y+r >= RinkY) then Puck.dy = -Puck.dy end
+end
+
 
 function love.load()
  Rink = love.graphics.newImage("Backstage.png", nil)
@@ -28,8 +38,7 @@ function love.load()
 end
 
 function love.update(dt)
-    Puck.x = Puck.x+Puck.dx
-    Puck.y = Puck.y+Puck.dy
+    UpdatePuck (dt)
 end
 
 function love.draw()
