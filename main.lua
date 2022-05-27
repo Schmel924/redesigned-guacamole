@@ -29,8 +29,6 @@ function  ResetPuck ()
     PuckDirect()
 end
 function UpdatePuck (dt)
-    -- local r = Puck.radius/2 Why the F i divded it?
-    -- change of timing, first check, then update...
     local x = false
     local y = false
     if (Puck.x+(Puck.dx*dt)-Puck.radius < 0) 
@@ -59,13 +57,8 @@ function UpdatePuck (dt)
     end
     --Now the question is should we update position after this? If we do, Puck gets reflected by invisible force inch before the wall
     -- now we update x and y only once in a frame, either touchnig the wall, or moving freely
-    
     if (not x) then Puck.x = Puck.x+Puck.dx*dt end
     if (not y) then Puck.y = Puck.y+Puck.dy*dt end
-    -- if (Puck.x <= r) then Puck.dx = -Puck.dx PuckDirect() end
-    -- if (Puck.y <= r) then Puck.dy = -Puck.dy PuckDirect() end
-    -- if (Puck.x+r >= RinkX) then Puck.dx = -Puck.dx PuckDirect() end
-    -- if (Puck.y+r >= RinkY) then Puck.dy = -Puck.dy PuckDirect() end
 end
 
 
@@ -78,6 +71,13 @@ end
 
 function love.update(dt)
     UpdatePuck (dt)
+    if love.mouse.isDown(1)
+    then 
+       local x,y = love.mouse.getPosition()
+        Puck.dx = x - Puck.x
+        Puck.dy = y - Puck.y
+        PuckDirect()
+    end    
 end
 
 function love.draw()
@@ -95,6 +95,7 @@ function love.keypressed(key)
         ResetPuck ()
     end
  end
+
 
 
 --sheepolution footer
