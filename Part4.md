@@ -53,8 +53,10 @@ if (Puck.x+Puck.dx-Puck.radius < 0)
   if (not y) then Puck.y = Puck.y+Puck.dy*dt end
 ```
 Это все будет в коммите 913005с8 37 additions and 7 deletions.
+<!---
+Ни хуя эти ссылки не работают
 https://github.com/jlord/sheetsee.js/commit/a5c3785ed8d6a35868bc169f07e40e889087fd2e
-
+-->
 Дальше я поудалял разные комменты, ибо текст проги и так понятен.
 
 И добавил еще одну функцию внутрь love.update
