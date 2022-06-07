@@ -8,14 +8,26 @@ if launch_type == "test" or launch_type == "debug" then
     end
 end
 
+function PuckInGoal ()
+    --{50, RinkY/3, 200, RinkY/3, 200, RinkY*2/3, 50, RinkY*2/3}
+ if Puck.x > LeftGate[1] and Puck.x < LeftGate[3] and Puck.y > LeftGate[2] and Puck.y < LeftGate[6]  then Score("Left") end
+ if Puck.x > RightGate[1] and Puck.x < RightGate[3] and Puck.y > RightGate[2] and Puck.y < RightGate[6]  then Score("Right") end
+end    
+
+function Score(s)
+    love.graphics.print (s, 20, 10)
+if s == "Left" then LeftScore = LeftScore +1 ResetPuck () end
+if s == "Right" then RightScore = RightScore +1 ResetPuck () end
+end
 
 --Actual code
 Puck = {}
 function DrawPuck ()
     love.graphics.setColor (0,0,0)
     love.graphics.circle('fill', Puck.x, Puck.y, Puck.radius)
-    love.graphics.setColor (1,1,1)
+  --[[  love.graphics.setColor (1,1,1)
     love.graphics.line (Puck.x, Puck.y, Puck.x+Puck.dirx*50, Puck.y+Puck.diry*50)
+    ]]
 end
 
 function PuckDirect()
@@ -25,7 +37,7 @@ function PuckDirect()
 end
 
 function  ResetPuck ()
-    Puck = {dx = love.math.random( -500, 500 ), dy = love.math.random( -500, 500 ), x = RinkX/2, y = RinkY/2, radius = 50} 
+    Puck = {dx = love.math.random( -500, 500 ), dy = love.math.random( -500, 500 ), x = RinkX/2, y = RinkY/2, radius = 20} 
     PuckDirect()
 end
 function UpdatePuck (dt)
@@ -57,6 +69,7 @@ function UpdatePuck (dt)
     end
     --Now the question is should we update position after this? If we do, Puck gets reflected by invisible force inch before the wall
     -- now we update x and y only once in a frame, either touchnig the wall, or moving freely
+    PuckInGoal ()
     if (not x) then Puck.x = Puck.x+Puck.dx*dt end
     if (not y) then Puck.y = Puck.y+Puck.dy*dt end
 end
@@ -65,9 +78,16 @@ end
 function love.load()
  Rink = love.graphics.newImage("Backstage.png", nil)
  RinkX, RinkY = Rink:getDimensions()
+ LeftGate = {50, RinkY/3, 200, RinkY/3, 200, RinkY*2/3, 50, RinkY*2/3}
+ RightGate = {RinkX-200, RinkY/3,RinkX-50, RinkY/3, RinkX-50,RinkY*2/3, RinkX-200, RinkY*2/3}
+ LeftScore = 0
+ RightScore = 0
  love.window.setMode(RinkX,RinkY,{resizable=true, vsync=false})
  ResetPuck ()
 end
+
+
+
 
 function love.update(dt)
     UpdatePuck (dt)
@@ -83,7 +103,12 @@ end
 function love.draw()
     love.graphics.setColor (1,1,1)
     love.graphics.draw (Rink)
+    love.graphics.setColor (0,1,0)
+    love.graphics.polygon("fill", LeftGate) 
+    love.graphics.setColor (0,0,1)
+    love.graphics.polygon("fill", RightGate)
     DrawPuck ()
+    love.graphics.print ("L"..LeftScore.."-R"..RightScore, (RinkX/2)-60, 10,0,4,4)
 end
 
 --input
