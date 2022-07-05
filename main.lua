@@ -11,17 +11,11 @@ end
 require "vectars"
 require "daman"
 
---[[function GetVector (x1,y1,x2,y2)
-    local x = x2-x1
-    local y = y2-y1
-    return x,y
-end--]] -- куда её использовал?
-
 function PuckInGoal ()
     --{50, RinkY/3, 200, RinkY/3, 200, RinkY*2/3, 50, RinkY*2/3}
  if Puck.c.x > LeftGate[1]  and Puck.c.x < LeftGate[3] and Puck.c.y > LeftGate[2] and Puck.c.y < LeftGate[6]  then Score("Left") end
  if Puck.c.x > RightGate[1] and Puck.c.x < RightGate[3] and Puck.c.y > RightGate[2] and Puck.c.y < RightGate[6]  then Score("Right") end
-end -- Puck.x вот за этим придется вернуться
+end 
 
 function Score(s)
     love.graphics.print (s, 20, 10)
@@ -29,29 +23,22 @@ if s == "Left" then LeftScore = LeftScore +1 ResetPuck () end
 if s == "Right" then RightScore = RightScore +1 ResetPuck () end
 end
 
---Actual code
+
 Puck = {}
 function DrawPuck ()
     local r, g, b, a = love.graphics.getColor( )
     love.graphics.setColor (Puck.color)
     love.graphics.circle('fill', Puck.c.x, Puck.c.y, Puck.radius) -- и здесь
     love.graphics.setColor (r,g,b,a)
-  --[[  love.graphics.setColor (1,1,1)
-    love.graphics.line (Puck.x, Puck.y, Puck.x+Puck.dirx*50, Puck.y+Puck.diry*50)
-    ]]
+ 
 end
 
---[[function PuckDirect() -- вот отличный кандидат на замену!
-    local len = math.sqrt(Puck.dx^2+Puck.dy^2)
-    Puck.dirx = Puck.dx/len
-    Puck.diry = Puck.dy/len
-end--]]
 
-function  ResetPuck () --приехали
+function  ResetPuck () 
     Puck = {radius = 20 , color = {0,0,0}}
     local c = {x = RinkX/2, y = RinkY/2}
     local d = {x = love.math.random( -500, 500 ), y = love.math.random( -500, 500 )}
-    local dir  = norm (d) --  PuckDirect()
+    local dir  = norm (d) 
     Puck.c = c
     Puck.d = d
     Puck.dir = dir
@@ -85,7 +72,7 @@ function UpdatePuck (dt)
         y = true
     end
     --Now the question is should we update position after this? If we do, Puck gets reflected by invisible force inch before the wall
-    -- now we update x and y only once in a frame, either touchnig the wall, or moving freely
+    --now we update x and y only once in a frame, either touchnig the wall, or moving freely
     Puck.dir = norm (Puck.d)
     PuckInGoal ()
     if (not x) then Puck.c.x = Puck.c.x+Puck.d.x*dt end
@@ -104,15 +91,15 @@ function love.load()
  ResetPuck ()
 end
 
-
-
-
 function love.update(dt)
    if love.mouse.isDown(1)
     then
-       local x,y = love.mouse.getPosition()
-         local v = {x,y}
-         Puck.d = path(Puck.c.v)
+     local   x, y = love.mouse.getPosition()
+         local v = {x=x,y=y}
+         Puck.d = path(Puck.c,v)
+    else
+        mx = 150 
+        my = 160
     end
     UpdatePuck (dt)
     UpdatePlayers (dt)

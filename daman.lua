@@ -1,44 +1,48 @@
 PlayerA = {}
-PlayerA.x = 1000
-PlayerA.y = 150
+PlayerA.c = {}
+PlayerA.c.x = 1000
+PlayerA.c.y = 150
 PlayerA.size = 50
-PlayerA.dx = 0
-PlayerA.dy = 0
+PlayerA.d = {}
+PlayerA.d.x = 0
+PlayerA.d.y = 0
 PlayerA.Puck = false
 PlayerB = {}
-PlayerB.x = 400
-PlayerB.y = 450
+PlayerB.c = {}
+PlayerB.d = {}
+PlayerB.c.x = 400
+PlayerB.c.y = 450
 PlayerB.size = 50
-PlayerB.dx = 0
-PlayerB.dy = 0
+PlayerB.d.x = 0
+PlayerB.d.y = 0
 PlayerB.Puck = false
 Players = {PlayerA, PlayerB}
 
 function  LaunchPuck(pl)
-    Puck.x = pl.x - 25
-    Puck.dx,Puck.dy = GetVector (pl.x,pl.y,LeftGate.center.x,LeftGate.center.y)
+    Puck.c.x = pl.c.x - 25
+    Puck.d = path (pl.c,LeftGate.center)
 end
 
 
 function UpdatePlayers(dt)
-for i,v in ipairs(Players) do
-    v.x = v.x + v.dx*dt
-    v.y = v.y + v.dy*dt
-    if v.Puck == true then 
-        LaunchPuck (v)
-        v.Puck = false
+for i,p in ipairs(Players) do
+    p.c.x = p.c.x + p.d.x*dt
+    p.c.y = p.c.y + p.d.y*dt
+    if p.Puck == true then 
+        LaunchPuck (p)
+        p.Puck = false
     else
-    CatchPuck (v)
+    CatchPuck (p)
     end
 end
 end
 function CatchPuck(pl)
-    if math.abs(pl.x - Puck.x) < 25 and math.abs( pl.y-Puck.y) < 25 then
+    if dist (pl.c,Puck.c) < 24 then
         Puck.color = {1,0,0}
-        Puck.dx = 0
-        Puck.dy = 0
-        Puck.x = pl.x
-        Puck.y = pl.y
+        Puck.d = scale (Puck.d,0) -- какой я вумный
+        Puck.c.x = pl.c.x
+        Puck.c.y = pl.c.y
+
         pl.Puck = true
     end
 end
@@ -47,6 +51,6 @@ end
 function DrawPlayers()
 for i,v in ipairs(Players) do
     love.graphics.setColor (1,0,0)
-    love.graphics.rectangle( 'fill', v.x, v.y, v.size, v.size, 0, 0, 3)
+    love.graphics.rectangle( 'fill', v.c.x, v.c.y, v.size, v.size, 0, 0, 3)
 end
 end

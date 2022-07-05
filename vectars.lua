@@ -4,8 +4,8 @@ end
 
 function norm (v)
 	local m = mag (v)
-	local z = v
-	if (m ~= 0) then z.x=z.x/m z.y=z.y/m end 
+	local z = {x=0,y=o}
+	if (m ~= 0) then z.x=v.x/m z.y=v.y/m end 
 	return z
 end
 
@@ -37,6 +37,6 @@ end
 function path (s,f)
 	local v = {}
 	v.x = f.x-s.x
-	v.y = f.y-s.x
+	v.y = f.y-s.y
 	return v
 end
