@@ -29,8 +29,6 @@ function DrawPuck ()
     love.graphics.setColor (Puck.color)
     love.graphics.circle('fill', Puck.c.x, Puck.c.y, Puck.radius) -- и здесь
     love.graphics.setColor (r,g,b,a)
-
- 
 end
 
 
@@ -117,7 +115,8 @@ function love.draw()
     DrawPlayers()
     DrawPuck ()
     love.graphics.setColor (0,0,0)
-    love.graphics.print ("L"..LeftScore.."-R"..RightScore, (RinkX/2)-60, 10,0,4,4)
+    love.graphics.print (Gamestate, (RinkX/2)-60, 10,0,4,4)
+   -- love.graphics.print ("L"..LeftScore.."-R"..RightScore, (RinkX/2)-60, 10,0,4,4)
    
 end
 
