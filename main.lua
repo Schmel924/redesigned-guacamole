@@ -88,15 +88,15 @@ function love.load()
  LeftScore = 0
  RightScore = 0
  love.window.setMode(RinkX,RinkY,{resizable=true, vsync=false})
+ Mousepos = {x=0,y=0}
  ResetPuck ()
 end
 
 function love.update(dt)
    if love.mouse.isDown(1)
     then
-     local   x, y = love.mouse.getPosition()
-         local v = {x=x,y=y}
-         Puck.d = path(Puck.c,v)
+        Mousepos.x, Mousepos.y = love.mouse.getPosition()
+        Puck.d = path(Puck.c,Mousepos)
     else
         mx = 150 
         my = 160
