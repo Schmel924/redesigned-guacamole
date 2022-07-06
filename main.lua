@@ -18,7 +18,6 @@ function PuckInGoal ()
 end 
 
 function Score(s)
-    love.graphics.print (s, 20, 10)
 if s == "Left" then LeftScore = LeftScore +1 ResetPuck () end
 if s == "Right" then RightScore = RightScore +1 ResetPuck () end
 end
@@ -30,6 +29,7 @@ function DrawPuck ()
     love.graphics.setColor (Puck.color)
     love.graphics.circle('fill', Puck.c.x, Puck.c.y, Puck.radius) -- и здесь
     love.graphics.setColor (r,g,b,a)
+
  
 end
 
@@ -42,6 +42,8 @@ function  ResetPuck ()
     Puck.c = c
     Puck.d = d
     Puck.dir = dir
+    Gamestate = "draw"
+    for i,p in ipairs(Players) do p.state = "hunt" end
 end
 
 function UpdatePuck (dt)
