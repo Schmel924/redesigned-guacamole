@@ -28,6 +28,8 @@ function DrawPuck ()
     local r, g, b, a = love.graphics.getColor( )
     love.graphics.setColor (Puck.color)
     love.graphics.circle('fill', Puck.c.x, Puck.c.y, Puck.radius) -- и здесь
+    love.graphics.setColor (1,1,1,1)
+   if Gamestate ~="attack" then love.graphics.line(Puck.c.x,Puck.c.y, Puck.c.x+Puck.dir.x*Puck.radius, Puck.c.y+Puck.dir.y*Puck.radius) end
     love.graphics.setColor (r,g,b,a)
 end
 
@@ -93,6 +95,8 @@ function love.load()
 end
 
 function love.update(dt)
+   -- require("lovebird").update() -- DEBUG HEAVY
+   
    if love.mouse.isDown(1)
     then
         Mousepos.x, Mousepos.y = love.mouse.getPosition()

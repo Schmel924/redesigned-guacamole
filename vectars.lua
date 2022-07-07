@@ -4,7 +4,7 @@ end
 
 function norm (v)
 	local m = mag (v)
-	local z = {x=0,y=o}
+	local z = {x=0,y=0}
 	if (m ~= 0) then z.x=v.x/m z.y=v.y/m end 
 	return z
 end
