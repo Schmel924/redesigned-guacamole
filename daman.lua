@@ -10,6 +10,7 @@ PlayerA.d.x = 0
 PlayerA.d.y = 0
 PlayerA.state = "hunt"
 PlayerA.time = 0
+PlayerA.team = 'L'
 PlayerB = {}
 PlayerB.c = {}
 PlayerB.d = {}
@@ -22,13 +23,17 @@ PlayerB.state = "hunt"
 PlayerB.speed = 30
 PlayerB.force = 800
 PlayerB.time = 0
+PlayerB.team = 'R'
 Players = {PlayerA, PlayerB}
 Gamestate = "draw"
 
 function  LaunchPuck(pl)
     Gamestate = "shot"
     Puck.c.x = pl.c.x - 25
-    Puck.d = scale(dir (pl.c,LeftGate.center),pl.force)
+    local d = nil
+    if pl.team == 'L' then  d = scale(dir (pl.c,RightGate.center),pl.force) end
+    if pl.team == 'R' then  d = scale(dir (pl.c,LeftGate.center),pl.force) end
+    Puck.d = d    
 end
 
 
@@ -70,13 +75,16 @@ end
 function DrawPlayers()
     local r, g, b, a = love.graphics.getColor( )
 for i,v in ipairs(Players) do
-    love.graphics.setColor (1,0,0)
+    if v.team == 'L' then love.graphics.setColor (0,1,0) end
+    if v.team == 'R' then love.graphics.setColor (0,1,1) end
     love.graphics.rectangle( 'fill', v.c.x-v.size/2, v.c.y-v.size/2, v.size, v.size, 0, 0, 3)
     love.graphics.setColor (1,1,1,1)
     love.graphics.line(v.c.x,v.c.y, v.c.x+v.d.x, v.c.y+v.d.y)
    
     if v.state == "attack" then
-        local d = dir (v.c,LeftGate.center)
+        local d = nil
+         if v.team == 'R' then  d = dir (v.c,LeftGate.center) end
+         if v.team == 'L' then  d = dir (v.c,RightGate.center) end
         love.graphics.setColor (1,0,0)
         width = love.graphics.getLineWidth()
         love.graphics.setLineWidth((love.timer.getTime()- v.time)*10 )

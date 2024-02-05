@@ -18,8 +18,8 @@ function PuckInGoal ()
 end 
 
 function Score(s)
-if s == "Left" then LeftScore = LeftScore +1 ResetPuck () end
-if s == "Right" then RightScore = RightScore +1 ResetPuck () end
+if s == "Left" then LeftScore = LeftScore +1 Kick_in() end
+if s == "Right" then RightScore = RightScore +1 Kick_in() end
 end
 
 
@@ -33,8 +33,7 @@ function DrawPuck ()
     love.graphics.setColor (r,g,b,a)
 end
 
-
-function  ResetPuck () 
+function ResetPuck()
     Puck = {radius = 20 , color = {0,0,0}}
     local c = {x = RinkX/2, y = RinkY/2}
     local d = {x = love.math.random( -500, 500 ), y = love.math.random( -500, 500 )}
@@ -42,8 +41,18 @@ function  ResetPuck ()
     Puck.c = c
     Puck.d = d
     Puck.dir = dir
+end   
+
+function resetPL(pl)
+    pl.state = 'hunt'
+    if pl.team == 'L' then pl.c.x = love.math.random( 0, RinkX/2 ) end
+    if pl.team == 'R' then pl.c.x = RinkX/2 + love.math.random( 0, RinkX/2 ) end
+end   
+
+function  Kick_in() 
+    ResetPuck()
     Gamestate = "draw"
-    for i,p in ipairs(Players) do p.state = "hunt" end
+    for i,p in ipairs(Players) do resetPL(p) end
 end
 
 function UpdatePuck (dt)
@@ -83,6 +92,7 @@ end
 
 
 function love.load()
+ --lovebird = require "lovebird"
  Rink = love.graphics.newImage("Backstage.png", nil)
  RinkX, RinkY = Rink:getDimensions()
  LeftGate = {50, RinkY/3, 200, RinkY/3, 200, RinkY*2/3, 50, RinkY*2/3, center = {x=125,y=RinkY/2} }
@@ -91,11 +101,13 @@ function love.load()
  RightScore = 0
  love.window.setMode(RinkX,RinkY,{resizable=true, vsync=false})
  Mousepos = {x=0,y=0}
- ResetPuck ()
+ Kick_in()
 end
 
 function love.update(dt)
-   -- require("lovebird").update() -- DEBUG HEAVY
+-- lovebird.update()
+-- lovebird.clear()
+-- lovebird.print ("X="..math.floor(Puck.c.x).." Y="..math.floor(Puck.c.y))
    
    if love.mouse.isDown(1)
     then
@@ -130,7 +142,7 @@ function love.keypressed(key)
        love.event.quit()
     end
     if key == "space" then
-        ResetPuck ()
+        Kick_in()
     end
  end
 
