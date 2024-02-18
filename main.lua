@@ -11,19 +11,19 @@ end
 require "vectars"
 require "daman"
 
+Puck = {}
+
 function PuckInGoal ()
-    --{50, RinkY/3, 200, RinkY/3, 200, RinkY*2/3, 50, RinkY*2/3}
- if Puck.c.x > LeftGate[1]  and Puck.c.x < LeftGate[3] and Puck.c.y > LeftGate[2] and Puck.c.y < LeftGate[6]  then Score("Left") end
- if Puck.c.x > RightGate[1] and Puck.c.x < RightGate[3] and Puck.c.y > RightGate[2] and Puck.c.y < RightGate[6]  then Score("Right") end
+    if Puck.c.x > LeftGate[1]  and Puck.c.x < LeftGate[3] and Puck.c.y > LeftGate[2] and Puck.c.y < LeftGate[6]  then Score("Left") end
+    if Puck.c.x > RightGate[1] and Puck.c.x < RightGate[3] and Puck.c.y > RightGate[2] and Puck.c.y < RightGate[6]  then Score("Right") end
 end 
 
 function Score(s)
-if s == "Left" then LeftScore = LeftScore +1 Kick_in() end
-if s == "Right" then RightScore = RightScore +1 Kick_in() end
+    if s == "Left" then LeftScore = LeftScore +1 Kick_in() end
+    if s == "Right" then RightScore = RightScore +1 Kick_in() end
 end
 
 
-Puck = {}
 function DrawPuck ()
     local r, g, b, a = love.graphics.getColor( )
     love.graphics.setColor (Puck.color)
@@ -94,23 +94,22 @@ end
 
 function love.load()
  --lovebird = require "lovebird"
- Rink = love.graphics.newImage("Backstage.png", nil)
- RinkX, RinkY = Rink:getDimensions()
- LeftGate = {50, RinkY/3, 200, RinkY/3, 200, RinkY*2/3, 50, RinkY*2/3, center = {x=125,y=RinkY/2} }
- RightGate = {RinkX-200, RinkY/3,RinkX-50, RinkY/3, RinkX-50,RinkY*2/3, RinkX-200, RinkY*2/3, center = {x=RinkX-125,y=RinkY/2}}
- LeftScore = 0
- RightScore = 0
- love.window.setMode(RinkX,RinkY,{resizable=true, vsync=false})
- Mousepos = {x=0,y=0}
- generatePlayers()
- Kick_in()
+    Rink = love.graphics.newImage("Backstage.png", nil)
+    RinkX, RinkY = Rink:getDimensions()
+    LeftGate = {50, RinkY/3, 200, RinkY/3, 200, RinkY*2/3, 50, RinkY*2/3, center = {x=125,y=RinkY/2} }
+    RightGate = {RinkX-200, RinkY/3,RinkX-50, RinkY/3, RinkX-50,RinkY*2/3, RinkX-200, RinkY*2/3, center = {x=RinkX-125,y=RinkY/2}}
+    LeftScore = 0
+    RightScore = 0
+    love.window.setMode(RinkX,RinkY,{resizable=true, vsync=false})
+    Mousepos = {x=0,y=0}
+    generatePlayers()
+    Kick_in()
 end
 
 function love.update(dt)
 -- lovebird.update()
 -- lovebird.clear()
 -- lovebird.print ("X="..math.floor(Puck.c.x).." Y="..math.floor(Puck.c.y))
-   
    if love.mouse.isDown(1)
     then
         Mousepos.x, Mousepos.y = love.mouse.getPosition()

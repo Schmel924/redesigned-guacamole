@@ -1,28 +1,29 @@
 Players = {}
 Gamestate = "draw"
+
 function generate_player(team)
-t={}
-t.c = {}
-t.c.x = 0
-t.c.y = 0
-t.size = 50
-t.speed = 30
-t.force = 800
-t.d = {}
-t.d.x = 0
-t.d.y = 0
-t.state = "hunt"
-t.time = 0
-t.team = team
-return t
+    t={}
+    t.c = {}
+    t.c.x = 0
+    t.c.y = 0
+    t.size = 50
+    t.speed = 30
+    t.force = 800
+    t.d = {}
+    t.d.x = 0
+    t.d.y = 0
+    t.state = "hunt"
+    t.time = 0
+    t.team = team
+    return t
 end
+
 function generatePlayers()
     for i=1,10,1 do
         if i < 6 then Players[i] = generate_player('L')
         else Players[i] = generate_player('R')
         end
     end
-
 end
 
 
