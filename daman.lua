@@ -42,26 +42,37 @@ function are_we_touching(p1, p2)
     return false
 end    
 
+function player_waiting(dt, p)
+    if love.timer.getTime() - p.time > 0.5 then p.state = "hunt" end
+end
+
+function player_hunting(dt, p)
+    p.d = scale(dir (p.c,Puck.c),p.speed)
+    if CatchPuck (p) then
+        p.time = love.timer.getTime()    
+        p.state = "attack" 
+        p.d = scale (p.d,0)
+        Gamestate = "attack"
+    end
+end    
+
+function player_attacking(dt,p)
+    if love.timer.getTime() - p.time > 1 then 
+        p.time = love.timer.getTime()
+        LaunchPuck (p)
+        p.state = "wait"
+    end
+end    
+
 function UpdatePlayers(dt)
 for i,p in ipairs(Players) do
     if (p.state ~= "wait") then
     p.c.x = p.c.x + p.d.x*dt
     p.c.y = p.c.y + p.d.y*dt
     end
-    if p.state == "attack" and love.timer.getTime() - p.time > 1 then 
-        p.time = 0
-        LaunchPuck (p)
-        p.state = "wait"
-    end
-    if p.state == "hunt" then
-    p.d = scale(dir (p.c,Puck.c),p.speed)
-        if CatchPuck (p) then
-        p.time = love.timer.getTime()    
-        p.state = "attack" 
-        p.d = scale (p.d,0)
-        Gamestate = "attack"
-        end
-    end
+    if p.state == "attack" then player_attacking(dt, p) end
+    if p.state == "hunt"   then player_hunting(dt, p) end
+    if p.state == "wait"   then player_waiting(dt, p) end
 end
 end
 
