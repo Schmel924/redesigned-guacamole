@@ -118,9 +118,12 @@ function love.update(dt)
         mx = 150 
         my = 160
     end
-    UpdatePuck (dt)
-    UpdatePlayers (dt)
+    UpdatePuck(dt)
+    UpdatePlayers(dt)
+   -- love.window.setTitle( love.timer.getFPS( ))
+
 end
+
 
 function love.draw()
     love.graphics.setColor (1,1,1)

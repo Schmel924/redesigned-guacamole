@@ -36,6 +36,11 @@ function  LaunchPuck(pl)
     Puck.d = d    
 end
 
+function are_we_touching(p1, p2)
+    local arewe = dist(p1.c,p2.c)
+    if arewe <= p1.size then return true end
+    return false
+end    
 
 function UpdatePlayers(dt)
 for i,p in ipairs(Players) do
