@@ -38,7 +38,7 @@ end
 
 function are_we_touching(p1, p2)
     local arewe = dist(p1.c,p2.c)
-    if arewe <= p1.size then return true end
+    if arewe <= p1.size/2 then return true end
     return false
 end    
 
@@ -47,16 +47,22 @@ function player_waiting(dt, p)
 end
 
 function player_hunting(dt, p)
+    p.c.x = p.c.x + p.d.x*dt
+    p.c.y = p.c.y + p.d.y*dt
     p.d = scale(dir (p.c,Puck.c),p.speed)
+
     if CatchPuck (p) then
         p.time = love.timer.getTime()    
         p.state = "attack" 
-        p.d = scale (p.d,0)
+        --p.d = scale (p.d,0)
         Gamestate = "attack"
     end
 end    
 
 function player_attacking(dt,p)
+    p.c.x = p.c.x + p.d.x*dt
+    p.c.y = p.c.y + p.d.y*dt
+    
     if love.timer.getTime() - p.time > 1 then 
         p.time = love.timer.getTime()
         LaunchPuck (p)
@@ -64,22 +70,28 @@ function player_attacking(dt,p)
     end
 end    
 
+function players_bumping(p, p2)
+
+end
+
 function UpdatePlayers(dt)
 for i,p in ipairs(Players) do
-    if (p.state ~= "wait") then
-    p.c.x = p.c.x + p.d.x*dt
-    p.c.y = p.c.y + p.d.y*dt
-    end
+    for j,p2 in ipairs(Players) do
+        if (i~=j) then 
+            if are_we_touching(p,p2) then players_bumping(p,p2) end
+        end    
+    end    
+    if p.state == "bump"   then player_bumping(dt, p)   end
     if p.state == "attack" then player_attacking(dt, p) end
-    if p.state == "hunt"   then player_hunting(dt, p) end
-    if p.state == "wait"   then player_waiting(dt, p) end
+    if p.state == "hunt"   then player_hunting(dt, p)   end
+    if p.state == "wait"   then player_waiting(dt, p)   end
 end
 end
 
 function CatchPuck(pl)
     if dist (pl.c,Puck.c) < 24 then
        -- Puck.color = {1,0,0}
-        Puck.d = scale (Puck.d,0) -- какой я вумный
+        Puck.d = pl.d --player gets to move the Puck now
         Puck.c.x = pl.c.x
         Puck.c.y = pl.c.y
         return true
