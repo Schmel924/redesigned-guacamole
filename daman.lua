@@ -7,7 +7,7 @@ function generate_player(team)
     t.c.x = 0
     t.c.y = 0
     t.size = 50
-    t.speed = 30
+    t.speed = 300
     t.force = 800
     t.d = {}
     t.d.x = 0
@@ -38,12 +38,18 @@ end
 
 function are_we_touching(p1, p2)
     local arewe = dist(p1.c,p2.c)
-    if arewe <= p1.size/2 then return true end
+    if arewe <= p1.size then return true end
     return false
 end    
 
 function player_waiting(dt, p)
     if love.timer.getTime() - p.time > 0.5 then p.state = "hunt" end
+end
+
+function player_bumping(dt, p)
+    p.c.x = p.c.x + p.d.x*dt
+    p.c.y = p.c.y + p.d.y*dt
+    if love.timer.getTime() - p.time > 0.3 then p.state = "hunt" end
 end
 
 function player_hunting(dt, p)
@@ -71,8 +77,18 @@ function player_attacking(dt,p)
 end    
 
 function players_bumping(p, p2)
-
+    local d = dir(p.c,p2.c)
+    local l = dist(p.c,p2.c)
+    local s = scale(d,l/2)
+    local clashpoint = {x = p.c.x+s.x, y = p.c.y+s.y}
+    p.state  = "bump"
+    p2.state = "bump"
+    p.d = scale(s, -1)
+    p.time = love.timer.getTime()
+    p2.d = s
+    p2.time = love.timer.getTime()
 end
+
 
 function UpdatePlayers(dt)
 for i,p in ipairs(Players) do
