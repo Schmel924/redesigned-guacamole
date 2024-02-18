@@ -1,31 +1,30 @@
-PlayerA = {}
-PlayerA.c = {}
-PlayerA.c.x = 1000
-PlayerA.c.y = 150
-PlayerA.size = 50
-PlayerA.speed = 30
-PlayerA.force = 800
-PlayerA.d = {}
-PlayerA.d.x = 0
-PlayerA.d.y = 0
-PlayerA.state = "hunt"
-PlayerA.time = 0
-PlayerA.team = 'L'
-PlayerB = {}
-PlayerB.c = {}
-PlayerB.d = {}
-PlayerB.c.x = 400
-PlayerB.c.y = 450
-PlayerB.size = 50
-PlayerB.d.x = 0
-PlayerB.d.y = 0
-PlayerB.state = "hunt"
-PlayerB.speed = 30
-PlayerB.force = 800
-PlayerB.time = 0
-PlayerB.team = 'R'
-Players = {PlayerA, PlayerB}
+Players = {}
 Gamestate = "draw"
+function generate_player(team)
+t={}
+t.c = {}
+t.c.x = 0
+t.c.y = 0
+t.size = 50
+t.speed = 30
+t.force = 800
+t.d = {}
+t.d.x = 0
+t.d.y = 0
+t.state = "hunt"
+t.time = 0
+t.team = team
+return t
+end
+function generatePlayers()
+    for i=1,10,1 do
+        if i < 6 then Players[i] = generate_player('L')
+        else Players[i] = generate_player('R')
+        end
+    end
+
+end
+
 
 function  LaunchPuck(pl)
     Gamestate = "shot"

@@ -47,6 +47,7 @@ function resetPL(pl)
     pl.state = 'hunt'
     if pl.team == 'L' then pl.c.x = love.math.random( 0, RinkX/2 ) end
     if pl.team == 'R' then pl.c.x = RinkX/2 + love.math.random( 0, RinkX/2 ) end
+    pl.c.y = love.math.random(RinkY)
 end   
 
 function  Kick_in() 
@@ -101,6 +102,7 @@ function love.load()
  RightScore = 0
  love.window.setMode(RinkX,RinkY,{resizable=true, vsync=false})
  Mousepos = {x=0,y=0}
+ generatePlayers()
  Kick_in()
 end
 
