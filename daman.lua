@@ -48,15 +48,22 @@ function player_waiting(dt, p)
     if love.timer.getTime() - p.time > 0.5 then p.state = "hunt" end
 end
 
+function update_coord(dt, p)
+    local goalX = p.c.x + p.d.x*dt
+    local goalY = p.c.y + p.d.y*dt
+    local actualX, actualY, cols, len = world:move(p, goalX, goalY)
+    p.c.x = actualX 
+    p.c.y = actualY
+    for i = 1, len do lovebird.print(p.name .. "==" .. tostring(cols[i].other)) end
+end    
+
 function player_bumping(dt, p)
-    p.c.x = p.c.x + p.d.x*dt
-    p.c.y = p.c.y + p.d.y*dt
+    update_coord(dt, p)
     if love.timer.getTime() - p.time > 0.3 then p.state = "hunt" end
 end
 
 function player_hunting(dt, p)
-    p.c.x = p.c.x + p.d.x*dt
-    p.c.y = p.c.y + p.d.y*dt
+    update_coord(dt, p)
     p.d = scale(dir (p.c,Puck.c),p.speed)
 
     if CatchPuck (p) then
@@ -68,8 +75,7 @@ function player_hunting(dt, p)
 end    
 
 function player_attacking(dt,p)
-    p.c.x = p.c.x + p.d.x*dt
-    p.c.y = p.c.y + p.d.y*dt
+    update_coord(dt, p)
     
     if love.timer.getTime() - p.time > 1 then 
         p.time = love.timer.getTime()

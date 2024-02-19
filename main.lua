@@ -95,7 +95,7 @@ end
 
 
 function love.load()
---lovebird = require "lovebird"
+    lovebird = require "lovebird"
     world = bump.newWorld(64)
     Rink = love.graphics.newImage("Backstage.png", nil)
     RinkX, RinkY = Rink:getDimensions()
@@ -110,7 +110,8 @@ function love.load()
 end
 
 function love.update(dt)
--- lovebird.update()
+   lovebird.update()
+   if pause then return end
 -- lovebird.clear()
 -- lovebird.print ("X="..math.floor(Puck.c.x).." Y="..math.floor(Puck.c.y))
    if love.mouse.isDown(1)
@@ -123,7 +124,7 @@ function love.update(dt)
     end
     UpdatePuck(dt)
     UpdatePlayers(dt)
-   -- love.window.setTitle( love.timer.getFPS( ))
+   love.window.setTitle( love.timer.getFPS( ))
 
 end
 
@@ -150,6 +151,12 @@ function love.keypressed(key)
     end
     if key == "space" then
         Kick_in()
+    end
+    if key == "p" then
+        pause = true
+    end
+    if key == "o" then
+        pause = false
     end
  end
 
