@@ -8,6 +8,7 @@ if launch_type == "test" or launch_type == "debug" then
     end
 end
 
+bump = require 'bump'
 require "vectars"
 require "daman"
 
@@ -48,6 +49,7 @@ function resetPL(pl)
     if pl.team == 'L' then pl.c.x = love.math.random( 0, RinkX/2 ) end
     if pl.team == 'R' then pl.c.x = RinkX/2 + love.math.random( 0, RinkX/2 ) end
     pl.c.y = love.math.random(RinkY)
+    world:update(pl, pl.c.x,pl.c.y,pl.size,pl.size)
 end   
 
 function  Kick_in() 
@@ -93,7 +95,8 @@ end
 
 
 function love.load()
- --lovebird = require "lovebird"
+--lovebird = require "lovebird"
+    world = bump.newWorld(64)
     Rink = love.graphics.newImage("Backstage.png", nil)
     RinkX, RinkY = Rink:getDimensions()
     LeftGate = {50, RinkY/3, 200, RinkY/3, 200, RinkY*2/3, 50, RinkY*2/3, center = {x=125,y=RinkY/2} }

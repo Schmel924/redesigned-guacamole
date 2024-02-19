@@ -40,3 +40,12 @@ function path (s,f)
 	v.y = f.y-s.y
 	return v
 end
+
+function RandomName(length)
+	length = length or 10
+	local res = ""
+	for i = 1, length do
+		res = res .. string.char(math.random(97, 122))
+	end
+	return res
+end

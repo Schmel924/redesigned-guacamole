@@ -15,6 +15,7 @@ function generate_player(team)
     t.state = "hunt"
     t.time = 0
     t.team = team
+    t.name = RandomName()
     return t
 end
 
@@ -23,6 +24,7 @@ function generatePlayers()
         if i < 6 then Players[i] = generate_player('L')
         else Players[i] = generate_player('R')
         end
+        world:add(Players[i],0,0,1,1)
     end
 end
 
