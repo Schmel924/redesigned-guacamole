@@ -57,10 +57,6 @@ function update_coord(dt, p)
     for i = 1, len do lovebird.print(p.name .. "==" .. tostring(cols[i].other)) end
 end    
 
-function player_bumping(dt, p)
-    update_coord(dt, p)
-    if love.timer.getTime() - p.time > 0.3 then p.state = "hunt" end
-end
 
 function player_hunting(dt, p)
     update_coord(dt, p)
@@ -84,28 +80,11 @@ function player_attacking(dt,p)
     end
 end    
 
-function players_bumping(p, p2)
-    local d = dir(p.c,p2.c)
-    local l = dist(p.c,p2.c)
-    local s = scale(d,l/2)
-    local clashpoint = {x = p.c.x+s.x, y = p.c.y+s.y}
-    p.state  = "bump"
-    p2.state = "bump"
-    p.d = scale(s, -1)
-    p.time = love.timer.getTime()
-    p2.d = s
-    p2.time = love.timer.getTime()
-end
 
 
 function UpdatePlayers(dt)
 for i,p in ipairs(Players) do
-    for j,p2 in ipairs(Players) do
-        if (i~=j) then 
-            if are_we_touching(p,p2) then players_bumping(p,p2) end
-        end    
-    end    
-    if p.state == "bump"   then player_bumping(dt, p)   end
+
     if p.state == "attack" then player_attacking(dt, p) end
     if p.state == "hunt"   then player_hunting(dt, p)   end
     if p.state == "wait"   then player_waiting(dt, p)   end
