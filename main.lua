@@ -11,6 +11,7 @@ end
 bump = require 'bump'
 require "vectars"
 require "daman"
+local Slab = require 'Slab'
 
 Puck = {}
 
@@ -107,9 +108,16 @@ function love.load()
     Mousepos = {x=0,y=0}
     generatePlayers()
     Kick_in()
+     Slab.Initialize()
 end
 
 function love.update(dt)
+   Slab.Update(dt)
+    Slab.BeginWindow('MyFirstWindow', {Title = "My First Window"})
+    Slab.Text(math.floor(Puck.d.x).."=="..math.floor(Puck.d.y))
+    Slab.NewLine()
+    if Slab.Button("Reset") then Kick_in() end
+    Slab.EndWindow()
    lovebird.update()
    if pause then return end
 -- lovebird.clear()
@@ -141,6 +149,7 @@ function love.draw()
     love.graphics.setColor (0,0,0)
     love.graphics.print (Gamestate, (RinkX/2)-60, 10,0,4,4)
    -- love.graphics.print ("L"..LeftScore.."-R"..RightScore, (RinkX/2)-60, 10,0,4,4)
+       Slab.Draw()
    
 end
 
